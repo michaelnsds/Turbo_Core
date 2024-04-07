@@ -1563,46 +1563,49 @@ public class L2Attackable extends L2Npc
 		// Apply Special Item drop with random(rnd) quantity(qty) for champions.
 		if (Config.L2JMOD_CHAMPION_ENABLE && isChampion() && ((Config.L2JMOD_CHAMPION_REWARD_LOWER_LVL_ITEM_CHANCE > 0) || (Config.L2JMOD_CHAMPION_REWARD_HIGHER_LVL_ITEM_CHANCE > 0)))
 		{
-			int champqty = Rnd.get(Config.L2JMOD_CHAMPION_REWARD_QTY);
-			ItemHolder item = new ItemHolder(Config.L2JMOD_CHAMPION_REWARD_ID, ++champqty, true);
-			L2Item itemCheck = ItemData.getInstance().getTemplate(item.getId());
-			
-			if ((player.getLevel() <= getLevel()) && (Rnd.get(100) < Config.L2JMOD_CHAMPION_REWARD_LOWER_LVL_ITEM_CHANCE))
+			for (int itemId : Config.L2JMOD_CHAMPION_REWARD_IDS)
 			{
-				if (Config.AUTO_LOOT || isFlying())
+				int champqty = Rnd.get(Config.L2JMOD_CHAMPION_REWARD_QTY);
+				ItemHolder item = new ItemHolder(itemId, ++champqty, true);
+				L2Item itemCheck = ItemData.getInstance().getTemplate(item.getId());
+				
+				if ((player.getLevel() <= getLevel()) && (Rnd.get(100) < Config.L2JMOD_CHAMPION_REWARD_LOWER_LVL_ITEM_CHANCE))
 				{
-					// vGodFather fix
-					if ((itemCheck.isStackable() && (player.getInventory().getItemByItemId(itemCheck.getId()) != null)) || (player.getInventory().getSize(false) < player.getInventoryLimit()))
+					if (Config.AUTO_LOOT || isFlying())
 					{
-						player.addItem("ChampionLoot", item.getId(), item.getCount(), this, true); // Give the item(s) to the L2PcInstance that has killed the L2Attackable
+						// vGodFather fix
+						if ((itemCheck.isStackable() && (player.getInventory().getItemByItemId(itemCheck.getId()) != null)) || (player.getInventory().getSize(false) < player.getInventoryLimit()))
+						{
+							player.addItem("ChampionLoot", item.getId(), item.getCount(), this, true); // Give the item(s) to the L2PcInstance that has killed the L2Attackable
+						}
+						else
+						{
+							dropItem(player, item); // drop the item on the ground
+						}
 					}
 					else
 					{
-						dropItem(player, item); // drop the item on the ground
+						dropItem(player, item);
 					}
 				}
-				else
+				else if ((player.getLevel() > getLevel()) && (Rnd.get(100) < Config.L2JMOD_CHAMPION_REWARD_HIGHER_LVL_ITEM_CHANCE))
 				{
-					dropItem(player, item);
-				}
-			}
-			else if ((player.getLevel() > getLevel()) && (Rnd.get(100) < Config.L2JMOD_CHAMPION_REWARD_HIGHER_LVL_ITEM_CHANCE))
-			{
-				if (Config.AUTO_LOOT || isFlying())
-				{
-					// vGodFather fix
-					if ((itemCheck.isStackable() && (player.getInventory().getItemByItemId(itemCheck.getId()) != null)) || (player.getInventory().getSize(false) < player.getInventoryLimit()))
+					if (Config.AUTO_LOOT || isFlying())
 					{
-						player.addItem("ChampionLoot", item.getId(), item.getCount(), this, true); // Give the item(s) to the L2PcInstance that has killed the L2Attackable
+						// vGodFather fix
+						if ((itemCheck.isStackable() && (player.getInventory().getItemByItemId(itemCheck.getId()) != null)) || (player.getInventory().getSize(false) < player.getInventoryLimit()))
+						{
+							player.addItem("ChampionLoot", item.getId(), item.getCount(), this, true); // Give the item(s) to the L2PcInstance that has killed the L2Attackable
+						}
+						else
+						{
+							dropItem(player, item); // drop the item on the ground
+						}
 					}
 					else
 					{
-						dropItem(player, item); // drop the item on the ground
+						dropItem(player, item);
 					}
-				}
-				else
-				{
-					dropItem(player, item);
 				}
 			}
 		}

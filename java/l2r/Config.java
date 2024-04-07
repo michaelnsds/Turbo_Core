@@ -707,7 +707,7 @@ public final class Config extends AbstractConfigs
 	public static float L2JMOD_CHAMPION_SPD_ATK;
 	public static int L2JMOD_CHAMPION_REWARD_LOWER_LVL_ITEM_CHANCE;
 	public static int L2JMOD_CHAMPION_REWARD_HIGHER_LVL_ITEM_CHANCE;
-	public static int L2JMOD_CHAMPION_REWARD_ID;
+	public static int[] L2JMOD_CHAMPION_REWARD_IDS;
 	public static int L2JMOD_CHAMPION_REWARD_QTY;
 	public static boolean L2JMOD_CHAMPION_ENABLE_VITALITY;
 	public static boolean L2JMOD_CHAMPION_ENABLE_IN_INSTANCES;
@@ -2261,7 +2261,22 @@ public final class Config extends AbstractConfigs
 			L2JMOD_CHAMPION_SPD_ATK = champions.getFloat("ChampionSpdAtk", 1);
 			L2JMOD_CHAMPION_REWARD_LOWER_LVL_ITEM_CHANCE = champions.getInt("ChampionRewardLowerLvlItemChance", 0);
 			L2JMOD_CHAMPION_REWARD_HIGHER_LVL_ITEM_CHANCE = champions.getInt("ChampionRewardHigherLvlItemChance", 0);
-			L2JMOD_CHAMPION_REWARD_ID = champions.getInt("ChampionRewardItemID", 6393);
+			
+			String[] propertySplit5 = champions.getString("ChampionRewardItemIDs", "6393;57").trim().split(";");
+			L2JMOD_CHAMPION_REWARD_IDS = new int[propertySplit5.length];
+			try
+			{
+				int i = 0;
+				for (String itemId : propertySplit5)
+				{
+					L2JMOD_CHAMPION_REWARD_IDS[i++] = Integer.parseInt(itemId);
+				}
+			}
+			catch (NumberFormatException nfe)
+			{
+				_log.warn(nfe.getMessage(), nfe);
+			}
+			
 			L2JMOD_CHAMPION_REWARD_QTY = champions.getInt("ChampionRewardItemQty", 1);
 			L2JMOD_CHAMPION_ENABLE_VITALITY = champions.getBoolean("ChampionEnableVitality", false);
 			L2JMOD_CHAMPION_ENABLE_IN_INSTANCES = champions.getBoolean("ChampionEnableInInstances", false);
