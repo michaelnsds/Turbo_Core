@@ -771,6 +771,8 @@ public final class Config extends AbstractConfigs
 	public static int L2JMOD_DUALBOX_CHECK_MAX_L2EVENT_PARTICIPANTS_PER_IP;
 	public static Map<Integer, Integer> L2JMOD_DUALBOX_CHECK_WHITELIST;
 	public static boolean L2JMOD_ALLOW_CHANGE_PASSWORD;
+	public static boolean ENABLE_COMBINETALISMAN_COMMAND;
+	public static int COMBINE_TALISMAN_MAX_MANA;
 	
 	// --------------------------------------------------
 	// Fortress Reward
@@ -2497,6 +2499,8 @@ public final class Config extends AbstractConfigs
 			MAX_DROP_NORMAL = L2JModSettings.getInt("MaxDropGuard", 16);
 			MIN_DROP_CAP = L2JModSettings.getInt("MinDropCaptain", 140);
 			MAX_DROP_CAP = L2JModSettings.getInt("MinDropCaptain", 300);
+			ENABLE_COMBINETALISMAN_COMMAND = L2JModSettings.getBoolean("EnableCombineTalismans", true);
+			COMBINE_TALISMAN_MAX_MANA = L2JModSettings.getInt("CombineTalismansMaxMana", 325);
 			
 			// Load PvP L2Properties file (if exists)
 			final PropertiesParser PVPSettings = new PropertiesParser(PVP_CONFIG_FILE);
